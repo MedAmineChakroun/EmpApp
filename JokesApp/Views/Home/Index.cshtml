@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Employee Management Dashboard";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 text-center">
+            <h1 class="display-3 text-primary mb-4" style="font-weight:bold">Welcome to Employee Management</h1>
+            <p class="lead mb-4">Efficiently manage employees with ease. Get started by exploring our features.</p>
+
+            <!-- Action Buttons Section -->
+            <div class="d-flex justify-content-center gap-4 mb-5">
+                <a asp-controller="Employees" asp-action="Index" class="btn btn-lg btn-success px-4 py-2 rounded-pill">View Employees</a>
+                <a asp-controller="Employees" asp-action="Create" class="btn btn-lg btn-primary px-4 py-2 rounded-pill">Add New Employee</a>
+            </div>
+
+            <!-- Info Cards Section -->
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card shadow-lg mb-4 mb-md-0">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Manage Employees</h4>
+                            <p class="card-text">View, edit, and manage all employee details efficiently with simple and clear UI.</p>
+                            <a asp-controller="Employees" asp-action="Index" class="btn btn-outline-warning">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4"> 
+                    <div class="card shadow-lg mb-4 mb-md-0">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Add New Employee</h4>
+                            <p class="card-text">Easily add new employees to your team with all the necessary details.</p>
+                            <a asp-controller="Employees" asp-action="Create" class="btn btn-outline-warning">Add Employee</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card shadow-lg mb-4 mb-md-0">
+                        <div class="card-body text-center">
+                            <h4 class="card-title">Employee Analytics</h4>
+                            <p class="card-text">Track employee performance and data for insightful decision making.</p>
+                            <a asp-controller="ShowStats" asp-action="Index" class="btn btn-outline-warning">View Analytics</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

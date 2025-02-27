@@ -1,0 +1,138 @@
+﻿@model EmployeeStatsViewModel
+
+@{
+    ViewData["Title"] = "Employee Analytics";
+}
+
+<style>
+    .analytics-container {
+        padding: 2rem;
+        background-color: #f8f9fa;
+        min-height: 100vh;
+    }
+</style>
+
+<div class="analytics-container">
+    <h2>Employee Analytics</h2>
+
+    <div class="stats-container" style="display:flex; flex-direction:column; gap:15px ;margin-bottom:50px">
+        <div class="stat-card" style="display:flex; flex-direction:row; gap:15px">
+            <div class="stat-label">Total Employees</div>
+            <div class="stat-value">@Model.Salaries.Count</div>
+          
+        </div>
+        <div class="stat-card" style="display:flex; flex-direction:row; gap:15px">
+            <div class="stat-label">Average Salary</div>
+            <div class="stat-value">$@Model.Salaries.Average().ToString("N0")</div>
+           
+        </div>
+        <div class="stat-card" style="display:flex; flex-direction:row; gap:15px" >
+            <div class="stat-label">Highest Salary</div>
+            <div class="stat-value">$@Model.Salaries.Max().ToString("N0")</div>
+          
+        </div>
+    </div>
+
+    <div class="chart-card" >
+        <div class="chart-header">
+            <h3 class="chart-title">Salary Distribution</h3>
+        </div>
+        <div style="display:flex; flex-direction:row; justify-content:space-around">
+            <canvas id="myChart" style="max-width:430px;max-height:400px;"></canvas>
+            <canvas id="salaryChart" style="max-width:430px;max-height:400px;"></canvas>
+        </div>
+       
+    </div>
+
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const salaryData = @Html.Raw(Json.Serialize(Model.Salaries));
+         const employeeNames = @Html.Raw(Json.Serialize(Model.Employees.Select(e => e.FirstName)));
+
+        const ctx = document.getElementById('myChart');
+        const ctx2 = document.getElementById('salaryChart');
+
+        // Generate employee labels (EMP-001, EMP-002, etc.)
+        const employeeLabels = salaryData.map((_, i) => `EMP-${String(i + 1).padStart(3, '0')}`);
+
+        // Destroy existing charts if they exist to prevent duplicates
+        if (window.myBarChart) {
+            window.myBarChart.destroy();
+        }
+        if (window.myPieChart) {
+            window.myPieChart.destroy();
+        }
+
+        // Bar Chart - Employee Salaries
+        window.myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: employeeNames,
+                datasets: [{
+                    label: 'Employee Salaries',
+                    data: salaryData,
+                    backgroundColor: '#3a7bd5',
+                    borderColor: '#2c3e50',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    hoverBackgroundColor: '#3a6073'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Pie Chart - Salary Distribution
+        window.myPieChart = new Chart(ctx2, {
+            type: 'pie',
+            data: {
+                labels: employeeNames,
+                datasets: [{
+                    label: 'Salary Distribution',
+                    data: salaryData,
+                    backgroundColor: [
+                        '#3a7bd5', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6',
+                        '#34495e', '#ff5733', '#c0392b', '#27ae60', '#8e44ad'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    });
+</script>
+
+
+<h3>Employee List</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Salary</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model.Employees)
+        {
+            <tr>
+                <td>@employee.FirstName</td>
+                <td>$@employee.Salary.ToString("N0")</td>
+            </tr>
+        }
+    </tbody>
+</table>
