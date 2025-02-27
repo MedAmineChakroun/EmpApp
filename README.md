@@ -7,5 +7,7 @@ Welcome to my First asp.net core MVC project!
 Here is an image showing the project:
 
 ![Project Screenshot](Images/CAP1.png)
+![CAP3 Image](Images/CAP3.png)
 
-This image helps visualize how the app looks.
+
+These images helps visualize how the app looks.
